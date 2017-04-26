@@ -19,6 +19,7 @@
 
 import os
 import sys
+import shutil
 
 import argparse
 import ConfigParser
@@ -45,7 +46,7 @@ def parse_config():
     defaults = {}
     if args.config:
         if not os.path.exists(args.config):
-            raise  EnvironmentError("Config file %s doesn't exist." % args.config)
+            raise EnvironmentError("Config file %s doesn't exist." % args.config)
         config = ConfigParser.SafeConfigParser()
         config.read([args.config])
         defaults = dict(config.items('Defaults'))
@@ -64,6 +65,8 @@ def parse_config():
     parser.add_argument('-r', '--no-repeat', action='store_true', help='Do not store special characters as repeated characters.')
 
     parser.add_argument('--change-password', action="store_true", help='Change the password used to encrypt the keys columns and exit.')
+
+    parser.add_argument('--ignore-lock', action='store_true', help='Ignores the lock file that ensures selfspy does not run if selfspy is already running, use wisely.')
 
     return parser.parse_args()
 
@@ -96,9 +99,20 @@ def main():
 
     lockname = os.path.join(args['data_dir'], cfg.LOCK_FILE)
     cfg.LOCK = LockFile(lockname)
+    if args["ignore_lock"]:
+        print lockname + '.lock'
+        try:
+            # works in Linux
+            os.remove(lockname + '.lock')
+            # should work in Windows since Windows version makes a folder, rmtree deletes the contents of a non-empty folder as well.
+            shutil.rmtree(lockname + '.lock')
+        except OSError:
+            pass
+        print 'Any lockfile that would be stored at %s has been deleted.' % (lockname + '.lock')
+
     if cfg.LOCK.is_locked():
         print '%s is locked! I am probably already running.' % lockname
-        print 'If you can find no selfspy process running, it is a stale lock and you can safely remove it.'
+        print 'If you can find no selfspy process running, it is a stale lock and you can safely remove it manually, or use --ignore-lock and selfspy will remove it for you.'
         print 'Shutting down.'
         sys.exit(1)
 
