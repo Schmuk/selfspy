@@ -19,7 +19,6 @@
 
 import os
 import sys
-import shutil
 
 import argparse
 import ConfigParser
@@ -104,8 +103,6 @@ def main():
         try:
             # works in Linux
             os.remove(lockname + '.lock')
-            # should work in Windows since Windows version makes a folder, rmtree deletes the contents of a non-empty folder as well.
-            shutil.rmtree(lockname + '.lock')
         except OSError:
             pass
         print 'Any lockfile that would be stored at %s has been deleted.' % (lockname + '.lock')
