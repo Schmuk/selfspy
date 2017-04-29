@@ -105,7 +105,9 @@ def main():
             os.remove(lockname + '.lock')
         except OSError:
             pass
-        print 'Any lockfile that would be stored at %s has been deleted.' % (lockname + '.lock')
+        print 'Any lockfile that would be stored at %s has been deleted. Exiting.' % (lockname + '.lock')
+        print
+        sys.exit(0)
 
     if cfg.LOCK.is_locked():
         print '%s is locked! I am probably already running.' % lockname
@@ -146,6 +148,8 @@ def main():
                            store_text=(not args['no_text']),
                            repeat_char=(not args['no_repeat']))
     cfg.LOCK.acquire()
+    while True:
+        pass
     try:
         astore.run()
     except SystemExit:
