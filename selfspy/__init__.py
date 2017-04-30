@@ -40,7 +40,9 @@ def parse_config():
     conf_parser = argparse.ArgumentParser(description=__doc__, add_help=False,
                                           formatter_class=argparse.RawDescriptionHelpFormatter)
     conf_parser.add_argument("-c", "--config",
-                             help="Config file with defaults. Command line parameters will override those given in the config file. The config file must start with a \"[Defaults]\" section, followed by [argument]=[value] on each line.", metavar="FILE")
+                             help="Config file with defaults. Command line parameters will override those given in "
+                                  "the config file. The config file must start with a \"[Defaults]\" section, "
+                                  "followed by [argument]=[value] on each line.", metavar="FILE")
     args, remaining_argv = conf_parser.parse_known_args()
 
     defaults = {}
@@ -56,17 +58,37 @@ def parse_config():
             config.read([os.path.expanduser('~/.selfspy/selfspy.conf')])
             defaults = dict(config.items('Defaults'))
 
-    parser = argparse.ArgumentParser(description='Monitor your computer activities and store them in an encrypted database for later analysis or disaster recovery.', parents=[conf_parser])
+    parser = argparse.ArgumentParser(description='Monitor your computer activities and store them in an encrypted '
+                                                 'database for later analysis or disaster recovery.',
+                                     parents=[conf_parser])
     parser.set_defaults(**defaults)
-    parser.add_argument('-p', '--password', help='Encryption password. If you want to keep your database unencrypted, specify -p "" here. If you don\'t specify a password in the command line arguments or in a config file, a dialog will pop up, asking for the password. The most secure is to not use either command line or config file but instead type it in on startup.')
-    parser.add_argument('-d', '--data-dir', help='Data directory for selfspy, where the database is stored. Remember that Selfspy must have read/write access. Default is %s' % cfg.DATA_DIR, default=cfg.DATA_DIR)
+    parser.add_argument('-p', '--password', help='Encryption password. If you want to keep your database unencrypted, '
+                                                 'specify -p "" here. If you don\'t specify a password in the command '
+                                                 'line arguments or in a config file, a dialog will pop up, '
+                                                 'asking for the password. The most secure is to not use either '
+                                                 'command line or config file but instead type it in on startup.')
+    parser.add_argument('-d', '--data-dir', help='Data directory for selfspy, where the database is stored. Remember '
+                                                 'that Selfspy must have read/write access. Default is %s' %
+                                                 cfg.DATA_DIR, default=cfg.DATA_DIR)
 
-    parser.add_argument('-n', '--no-text', action='store_true', help='Do not store what you type. This will make your database smaller and less sensitive to security breaches. Process name, window titles, window geometry, mouse clicks, number of keys pressed and key timings will still be stored, but not the actual letters. Key timings are stored to enable activity calculation in selfstats. If this switch is used, you will never be asked for password.')
-    parser.add_argument('-r', '--no-repeat', action='store_true', help='Do not store special characters as repeated characters.')
+    parser.add_argument('-n', '--no-text', action='store_true', help='Do not store what you type. This will make your '
+                                                                     'database smaller and less sensitive to security '
+                                                                     'breaches. Process name, window titles, '
+                                                                     'window geometry, mouse clicks, number of keys '
+                                                                     'pressed and key timings will still be stored, '
+                                                                     'but not the actual letters. Key timings are '
+                                                                     'stored to enable activity calculation in '
+                                                                     'selfstats. If this switch is used, '
+                                                                     'you will never be asked for password.')
+    parser.add_argument('-r', '--no-repeat', action='store_true', help='Do not store special characters as repeated '
+                                                                       'characters.')
 
-    parser.add_argument('--change-password', action="store_true", help='Change the password used to encrypt the keys columns and exit.')
+    parser.add_argument('--change-password', action="store_true", help='Change the password used to encrypt the keys '
+                                                                       'columns and exit.')
 
-    parser.add_argument('--ignore-lock', action='store_true', help='Ignores the lock file that ensures selfspy does not run if selfspy is already running, use wisely.')
+    parser.add_argument('--ignore-lock', action='store_true', help='Ignores the lock file that ensures selfspy does '
+                                                                   'not run if selfspy is already running, '
+                                                                   'use wisely.')
 
     return parser.parse_args()
 
@@ -132,7 +154,8 @@ def main():
 
     if cfg.LOCK.is_locked():
         print '%s is locked! I am probably already running.' % lockname
-        print 'If you can find no selfspy process running, it is a stale lock and you can safely remove it manually, or use --ignore-lock and selfspy will remove it for you.'
+        print 'If you can find no selfspy process running, it is a stale lock and you can safely remove it manually, ' \
+              'or use --ignore-lock and selfspy will remove it for you. '
         print 'Shutting down.'
         sys.exit(1)
 
