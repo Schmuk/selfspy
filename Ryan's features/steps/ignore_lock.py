@@ -60,7 +60,6 @@ def given_a_lock_exists(step):
         assert False, "the lockfile does not exist"
 
 
-
 @step(u'When: the user has not entered the command line switch to ignore the lock')
 def when_the_user_has_not_entered_the_command_line_switch_to_ignore_the_lock(step):
     try:
