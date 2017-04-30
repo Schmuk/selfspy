@@ -19,6 +19,7 @@
 
 import os
 import sys
+import psutil
 
 import argparse
 import ConfigParser
@@ -99,15 +100,35 @@ def main():
     lockname = os.path.join(args['data_dir'], cfg.LOCK_FILE)
     cfg.LOCK = LockFile(lockname)
     if args["ignore_lock"]:
-        print lockname + '.lock'
-        try:
-            # works in Linux
-            os.remove(lockname + '.lock')
-        except OSError:
-            pass
-        print 'Any lockfile that would be stored at %s has been deleted. Exiting.' % (lockname + '.lock')
-        print
-        sys.exit(0)
+        selfspy_processes = 0
+        pid_exists = True
+        process_list = psutil.pids()
+        for process in range(0, len(process_list)):
+            try:
+                process_to_check = psutil.Process(process_list[process])
+            except psutil.NoSuchProcess:
+                pid_exists = False
+            if pid_exists:
+                for i in range(process_to_check.cmdline().__len__()):
+                    # nautilus's title bar was throwing off this if statement for me.
+                    if "selfspy" in process_to_check.cmdline()[i] and "nautilus" not in process_to_check.cmdline()[i]\
+                            and "PycharmProjects" not in process_to_check.cmdline()[i]:
+                        print process_to_check.cmdline()[i]
+                        selfspy_processes += 1
+        if selfspy_processes >= 2:
+            print "Selfspy is already running, please close it before trying to delete the lock! Exiting."
+            sys.exit(1)
+        else:
+            print "Verified selfspy is not running, deleting lock file now."
+            print "Your lock file is: " + lockname + '.lock'
+            try:
+                # works in Linux only
+                os.remove(lockname + '.lock')
+            except OSError:
+                pass
+            print 'Any lockfile that would be stored at %s has been deleted. Exiting.' % (lockname + '.lock')
+            print
+            sys.exit(0)
 
     if cfg.LOCK.is_locked():
         print '%s is locked! I am probably already running.' % lockname
