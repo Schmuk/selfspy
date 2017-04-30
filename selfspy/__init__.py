@@ -148,8 +148,6 @@ def main():
                            store_text=(not args['no_text']),
                            repeat_char=(not args['no_repeat']))
     cfg.LOCK.acquire()
-    while True:
-        pass
     try:
         astore.run()
     except SystemExit:
