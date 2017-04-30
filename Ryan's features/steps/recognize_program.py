@@ -2,14 +2,6 @@
 from lettuce import step
 import os
 import psutil
-import time
-
-class Program:
-    program_name = ""
-    opened = False
-
-program_data = Program
-
 PROGRAM_NAME = "google-chrome-stable"
 PROCESS_NAME = "chrome"
 
