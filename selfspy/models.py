@@ -201,26 +201,33 @@ class Keys(SpookMixin, Base):
         return json.loads(zlib.decompress(keys))
 
     def to_humanreadable(self, text):
-        back_rex = re.compile("\<\[Backspace\]x?(\d+)?\>", re.IGNORECASE) # creates regualer expression object
+        backspace_rex = re.compile("\<\[Backspace\]x?(\d+)?\>", re.IGNORECASE) # creates regualer expression object
         tab_rex = re.compile("\<\[Tab\]x?(\d+)?\>", re.IGNORECASE)
-        #return_rex = re.compile("\<\[Return\]x?(\d+)?\>", re.IGNORECASE)
-        matches = back_rex.search(text)
-        tab_match = tab_rex.search(text)
-        #return_match = return_rex.search(text)
+        return_rex = re.compile("\<\[Return\]x?(\d+)?\>", re.IGNORECASE)
+        up_rex = re.compile("\<\[Up\]x?(\d+)?\>", re.IGNORECASE)
+        down_rex = re.compile("\<\[Down\]x?(\d+)?\>", re.IGNORECASE)
+        left_rex = re.compile("\<\[Left\]x?(\d+)?\>", re.IGNORECASE)
 
-        while matches is not None:
-            backspaces = matches.group(1)
+        backspace_matches = backspace_rex.search(text)
+        tab_match = tab_rex.search(text)
+        return_match = return_rex.search(text)
+        up_match = up_rex.search(text)
+        down_match = down_rex.search(text)
+        left_match = left_rex.search(text)
+
+        while backspace_matches is not None:
+            backspaces = backspace_matches.group(1)
             try:
                 deletechars = int(backspaces)
             except TypeError:
                 deletechars = 1
 
-            newstart = matches.start() - deletechars
+            newstart = backspace_matches.start() - deletechars
             if newstart < 0:
                 newstart = 0
 
-            text = (text[:newstart] + text[matches.end():])
-            matches = back_rex.search(text)
+            text = (text[:newstart] + text[backspace_matches.end():])
+            backspace_matches = backspace_rex.search(text)
 
         while tab_match is not None:
 
@@ -231,6 +238,46 @@ class Keys(SpookMixin, Base):
 
             text = re.sub("\<\[Tab\]x?(\d+)?\>", tabs, text, 1)
             tab_match = tab_rex.search(text)
+
+        while return_match is not None:
+
+            try:
+                returns = r"\\r" * int(return_match.group(1))
+            except TypeError:
+                returns = r"\\r"
+
+            text = re.sub("\<\[Return\]x?(\d+)?\>", returns, text, 1)
+            return_match = return_rex.search(text)
+
+        while up_match is not None:
+
+            try:
+                up_presses = "\^" * int(up_match.group(1))
+            except TypeError:
+                up_presses = "\^"
+
+            text = re.sub("\<\[Up\]x?(\d+)?\>", up_presses, text, 1)
+            up_match = up_rex.search(text)
+
+        while down_match is not None:
+
+            try:
+                down_button_presses = "\down" * int(down_match.group(1))
+            except TypeError:
+                down_button_presses = "\down"
+
+            text = re.sub("\<\[Down\]x?(\d+)?\>", down_button_presses, text, 1)
+            down_match = down_rex.search(text)
+
+        while left_match is not None:
+
+            try:
+                left_button_presses = "\left" * int(left_match.group(1))
+            except TypeError:
+                left_button_presses = "\left"
+
+            text = re.sub("\<\[Left\]x?(\d+)?\>", left_button_presses, text, 1)
+            left_match = left_rex.search(text)
 
         return text
 
