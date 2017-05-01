@@ -59,6 +59,8 @@ class Process(SpookMixin, Base):
         return "<Process '%s'>" % self.name
 
 
+
+# ************************************************************************************
 class Window(SpookMixin, Base):
     title = Column(Unicode, index=True)
 
@@ -71,7 +73,7 @@ class Window(SpookMixin, Base):
 
     def __repr__(self):
         return "<Window '%s'>" % (repr(self.title))
-
+# *************************************************************************************
 
 class Geometry(SpookMixin, Base):
     xpos = Column(Integer, nullable=False)
@@ -199,8 +201,13 @@ class Keys(SpookMixin, Base):
         return json.loads(zlib.decompress(keys))
 
     def to_humanreadable(self, text):
-        backrex = re.compile("\<\[Backspace\]x?(\d+)?\>",re.IGNORECASE)
-        matches = backrex.search(text)
+        back_rex = re.compile("\<\[Backspace\]x?(\d+)?\>", re.IGNORECASE) # creates regualer expression object
+        tab_rex = re.compile("\<\[Tab\]x?(\d+)?\>", re.IGNORECASE)
+        return_rex = re.compile("\<\[Return\]x?(\d+)?\>", re.IGNORECASE)
+        matches = back_rex.search(text)
+        tab_match = tab_rex.search(text)
+        return_match = return_rex.search(text)
+
         while matches is not None:
             backspaces = matches.group(1)
             try:
@@ -213,7 +220,18 @@ class Keys(SpookMixin, Base):
                 newstart = 0
 
             text = (text[:newstart] + text[matches.end():])
-            matches = backrex.search(text)
+            matches = back_rex.search(text)
+
+        while tab_match is not None:
+
+            try:
+                tabs = r"\\t" * int(tab_match.group(1))
+            except TypeError:
+                tabs = r"\\t" # if it fails just place one \t
+
+            text = re.sub("\<\[Tab\]x?(\d+)?\>", tabs, text, 1)
+            tab_match = tab_rex.search(text)
+
         return text
 
     def load_timings(self):
