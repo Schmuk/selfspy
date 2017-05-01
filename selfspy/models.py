@@ -203,10 +203,10 @@ class Keys(SpookMixin, Base):
     def to_humanreadable(self, text):
         back_rex = re.compile("\<\[Backspace\]x?(\d+)?\>", re.IGNORECASE) # creates regualer expression object
         tab_rex = re.compile("\<\[Tab\]x?(\d+)?\>", re.IGNORECASE)
-        return_rex = re.compile("\<\[Return\]x?(\d+)?\>", re.IGNORECASE)
+        #return_rex = re.compile("\<\[Return\]x?(\d+)?\>", re.IGNORECASE)
         matches = back_rex.search(text)
         tab_match = tab_rex.search(text)
-        return_match = return_rex.search(text)
+        #return_match = return_rex.search(text)
 
         while matches is not None:
             backspaces = matches.group(1)
