@@ -19,6 +19,7 @@
 # This file is loosely based on examples/record_demo.py in python-xlib
 
 import sys
+from subprocess import check_output
 
 from Xlib import X, XK, display
 from Xlib.ext import record
@@ -102,6 +103,10 @@ class Sniffer:
             return
 
         cur_class, cur_window, cur_name = self.get_cur_window()
+
+        if cur_class is "Google-chrome":
+            cur_name = check_output("chromix-too ls active | awk '{print $2}'", shell=True)
+
         if cur_class:
             cur_geo = self.get_geometry(cur_window)
             if cur_geo:
