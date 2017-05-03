@@ -104,8 +104,8 @@ class Sniffer:
 
         cur_class, cur_window, cur_name = self.get_cur_window()
 
-        if cur_class is "Google-chrome":
-            cur_name = check_output("chromix-too ls active | awk '{print $2}'", shell=True)
+        if "Google-chrome" in cur_class:
+            cur_name = check_output("chromix-too ls active | awk '{print$2}'", shell=True)
 
         if cur_class:
             cur_geo = self.get_geometry(cur_window)
