@@ -212,7 +212,7 @@ class Selfstats:
         self.need_activity = False
         self.need_timings = False
         self.need_keys = False
-        self.need_humanreadable = False
+        self.need_humanreadable = False #Changed from False to True
         self.need_summary = False
         self.need_process = any(self.args[k] for k in PROCESS_ACTIONS)
         self.need_window = any(self.args[k] for k in WINDOW_ACTIONS)
@@ -255,7 +255,7 @@ class Selfstats:
             else:
                 return q, False
         return q, True
-
+############################################################################
     def filter_prop(self, prop, startprop):
         self.session = self.session_maker()
 
@@ -330,8 +330,10 @@ class Selfstats:
         else:
             print
 
+
         for row in fkeys:
             rows += 1
+
             print row.id, row.started, pretty_seconds((row.created_at - row.started).total_seconds()), row.process.name, '"%s"' % row.window.title, row.nrkeys,
             if self.args['showtext']:
                 if self.need_humanreadable:
