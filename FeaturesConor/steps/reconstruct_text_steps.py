@@ -10,7 +10,7 @@ def when_the_to_humanreadable_method_is_called_on_the_text(step):
     world.user_text = to_humanreadable(world.user_text)
 @step(u'Then the output text should be "([^"]*)"')
 def then_the_output_text_should_be_group1(step, reconstruct_text):
-    if world.user_text is reconstruct_text:
+    if world.user_text == reconstruct_text:
         assert True
     else:
         assert False
