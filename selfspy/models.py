@@ -201,7 +201,7 @@ class Keys(SpookMixin, Base):
         return json.loads(zlib.decompress(keys))
 
     def to_humanreadable(self, text):
-        backspace_rex = re.compile("\<\[Backspace\]x?(\d+)?\>", re.IGNORECASE)  # creates regualer expression object
+        backspace_rex = re.compile("\<\[Backspace\]x?(\d+)?\>", re.IGNORECASE)  # creates regular expression object
         tab_rex = re.compile("\<\[Tab\]x?(\d+)?\>", re.IGNORECASE)
         return_rex = re.compile("\<\[Return\]x?(\d+)?\>", re.IGNORECASE)
 
@@ -277,9 +277,9 @@ class Keys(SpookMixin, Base):
         while left_match is not None:
 
             try:
-                left_button_presses = "\l" * int(left_match.group(1)) + " "
+                left_button_presses = "\<" * int(left_match.group(1)) + " "
             except TypeError:
-                left_button_presses = "\l" + " "
+                left_button_presses = "\<" + " "
 
             text = re.sub("\<\[Left\]x?(\d+)?\>", left_button_presses, text, 1)
             left_match = left_rex.search(text)
@@ -287,9 +287,9 @@ class Keys(SpookMixin, Base):
         while right_match is not None:
 
             try:
-                right_button_presses = r"\ri" * int(right_match.group(1)) + " "
+                right_button_presses = "\>" * int(right_match.group(1)) + " "
             except TypeError:
-                right_button_presses = r"\ri" + " "
+                right_button_presses = "\>" + " "
 
             text = re.sub("\<\[Right\]x?(\d+)?\>", right_button_presses, text, 1)
             right_match = right_rex.search(text)
