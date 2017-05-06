@@ -103,4 +103,4 @@ def to_humanreadable(text):
 
     return text
 
-print to_humanreadable("<[Tab]x3>Said someone had seem <[Backspace]x2>n Jon on his bike")
+print to_humanreadable("<[Tab]x3>Said someone had seem <[Tab]x2>n Jon on his bike")
