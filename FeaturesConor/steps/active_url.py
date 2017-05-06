@@ -7,13 +7,13 @@ def step_impl(step):
     pass
 
 @step(u'When I enter the "([^"]*)" command')
-def when_i_enter_the_selfstats_command(step, my_command):
-    world.my_command = check_output("selfstats")
+def when_i_enter_the_selfstats_command(step, selfstats_output):
+    world.selfstats_output = check_output("selfstats")
 
 
 @step("I should see the the active tab urls in the output")
 def step_impl(step):
-    if url_I_want_to_see in world.my_command:
+    if url_I_want_to_see in world.selfstats_output:
         assert True
     else:
         assert False
