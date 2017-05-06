@@ -93,9 +93,9 @@ def to_humanreadable(text):
     while left_match is not None:
 
         try:
-            left_button_presses = "\l" * int(left_match.group(1))
+            left_button_presses = "\<" * int(left_match.group(1))
         except TypeError:
-            left_button_presses = "\l"
+            left_button_presses = "\<"
 
         text = re.sub("\<\[Left\]x?(\d+)?\>", left_button_presses, text, 1)
         left_match = left_rex.search(text)
@@ -103,9 +103,9 @@ def to_humanreadable(text):
     while right_match is not None:
 
         try:
-            right_button_presses = r"\ri" * int(right_match.group(1))
+            right_button_presses = "\>" * int(right_match.group(1))
         except TypeError:
-            right_button_presses = r"\ri"
+            right_button_presses = "\>"
 
         text = re.sub("\<\[Right\]x?(\d+)?\>", right_button_presses, text, 1)
         right_match = right_rex.search(text)
