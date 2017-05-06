@@ -257,11 +257,11 @@ class Keys(SpookMixin, Base):
         while up_match is not None:
 
             try:
-                up_presses = "\u" * int(up_match.group(1)) + " "
+                up_button_presses = "\u" * int(up_match.group(1)) + " "
             except TypeError:
-                up_presses = "\u" + " "
+                up_button_presses = "\u" + " "
 
-            text = re.sub("\<\[Up\]x?(\d+)?\>", up_presses, text, 1)
+            text = re.sub("\<\[Up\]x?(\d+)?\>", up_button_presses, text, 1)
             up_match = up_rex.search(text)
 
         while down_match is not None:
