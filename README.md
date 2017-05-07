@@ -285,7 +285,11 @@ optional arguments:
   --key-freqs           Summarize a table of absolute and relative number of
                         keystrokes for each used key during the time period.
                         Requires password.
-  --human-readable      This modifies the --body entry and honors backspace.
+  --human-readable      This modifies the --body entry and honors backspace.  
+                        Will now also swap <[Tab]x(number of times key was
+                        pressed)> to \t. For example <[Tab]x3> will be
+                        replaced with \t\t\t. Will also do this for arrow keys
+                        and Enter\Return key.
   --active [seconds]    Summarize total time spent active during the period.
                         The optional argument gives how many seconds after
                         each mouse click (including scroll up or down) or
