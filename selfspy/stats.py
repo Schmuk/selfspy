@@ -533,7 +533,7 @@ def parse_config():
 
     parser.add_argument('--key-freqs', action='store_true', help='Summarize a table of absolute and relative number of keystrokes for each used key during the time period. Requires password.')
 
-    parser.add_argument('--human-readable', action='store_true', help='This modifies the --body entry and honors backspace.')
+    parser.add_argument('--human-readable', action='store_true', help='This modifies the --body entry and honors backspace.  Will now also swap <[Tab]x(number of times key was pressed)> to ' + r'\t. For example <[Tab]x3> will be replaced with \t\t\t. ' + 'Will also do this for arrow keys and Enter\Return key.')
     parser.add_argument('--active', type=int, metavar='seconds', nargs='?', const=ACTIVE_SECONDS, help='Summarize total time spent active during the period. The optional argument gives how many seconds after each mouse click (including scroll up or down) or keystroke that you are considered active. Default is %d.' % ACTIVE_SECONDS)
 
     parser.add_argument('--ratios', type=int, metavar='seconds', nargs='?', const=ACTIVE_SECONDS, help='Summarize the ratio between different metrics in the given period. "Clicks" will not include up or down scrolling. The optional argument is the "seconds" cutoff for calculating active use, like --active.')
