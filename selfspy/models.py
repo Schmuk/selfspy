@@ -60,7 +60,6 @@ class Process(SpookMixin, Base):
 
 
 
-# ************************************************************************************
 class Window(SpookMixin, Base):
     title = Column(Unicode, index=True)
 
@@ -73,7 +72,7 @@ class Window(SpookMixin, Base):
 
     def __repr__(self):
         return "<Window '%s'>" % (repr(self.title))
-# *************************************************************************************
+
 
 class Geometry(SpookMixin, Base):
     xpos = Column(Integer, nullable=False)
