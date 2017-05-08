@@ -200,7 +200,7 @@ class Keys(SpookMixin, Base):
         return json.loads(zlib.decompress(keys))
 
     def to_humanreadable(self, text):
-        backspace_rex = re.compile("\<\[Backspace\]x?(\d+)?\>", re.IGNORECASE)  # creates regular expression object
+        backspace_rex = re.compile("\<\[Backspace\]x?(\d+)?\>", re.IGNORECASE) 
         tab_rex = re.compile("\<\[Tab\]x?(\d+)?\>", re.IGNORECASE)
         return_rex = re.compile("\<\[Return\]x?(\d+)?\>", re.IGNORECASE)
 
