@@ -255,7 +255,7 @@ class Selfstats:
             else:
                 return q, False
         return q, True
-############################################################################
+
     def filter_prop(self, prop, startprop):
         self.session = self.session_maker()
 
@@ -556,7 +556,7 @@ def make_encrypter(password):
         encrypter = Blowfish.new(hashlib.md5(password).digest())
     return encrypter
 
-# test comment - joe mullen
+
 
 def main():
     try:
